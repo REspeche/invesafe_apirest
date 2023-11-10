@@ -14,6 +14,10 @@ var app = express(),
 app.use(cors({origin: '*'}));
 
 // default route
+app.get('/', function (req, res) {
+  res.writeHead(200, {'Content-Type': 'text/plain'});
+  res.end('API is working correctly... \n');
+});
 app.get(config.app.base+'/v1', function (req, res) {
     return res.send(
       {

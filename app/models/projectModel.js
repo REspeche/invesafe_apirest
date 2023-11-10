@@ -1049,8 +1049,8 @@ var Project = {
     assetAnnualReturn,
     assetRenovationTargetYield,
     assetRentStartDate,
-    assetRentPerToken,
-    assetTokenPrice,
+    setupFee,
+    assetTicketPrice,
     assetTotalTokens,
     assetPropertyType,
     assetConstructionYear,
@@ -1066,20 +1066,20 @@ var Project = {
     idFinancials,
     grossRentAnual,
     grossRent,
-    monthlyCosts,
-    propertyManagement,
-    platformCost,
-    propertyMaintenance,
+    lotClossingCost,
+    brokerComission,
+    clossingCost,
+    successFee,
     propertyTaxes,
     propertyInsurance,
     propertyUtilities,
-    netRentMonthly,
-    netRentAnnual,
+    salePrice,
+    netProfit,
     assetPrice,
     underlyingAssetPrice,
     platformListingFee,
-    initMaintenanceReserve,
-    renovationReserve,
+    accountantFees,
+    saleClossingCost,
     result) {
     var ret = new response;
     var strSQL = "CALL SP_SAVE_META_PROPERTIES ("+
@@ -1090,8 +1090,8 @@ var Project = {
                   ((assetAnnualReturn)?"'"+assetAnnualReturn+"',":"null,")+
                   ((assetRenovationTargetYield)?"'"+assetRenovationTargetYield+"',":"null,")+
                   ((assetRentStartDate)?"'"+assetRentStartDate+"',":"null,")+
-                  ((assetRentPerToken)?"'"+assetRentPerToken+"',":"null,")+
-                  ((assetTokenPrice)?"'"+assetTokenPrice+"',":"null,")+
+                  ((setupFee)?"'"+setupFee+"',":"null,")+
+                  ((assetTicketPrice)?"'"+assetTicketPrice+"',":"null,")+
                   ((assetTotalTokens)?"'"+assetTotalTokens+"',":"null,")+
                   ((assetPropertyType)?"'"+assetPropertyType+"',":"null,")+
                   ((assetConstructionYear)?"'"+assetConstructionYear+"',":"null,")+
@@ -1105,20 +1105,20 @@ var Project = {
                   "'"+idFinancials+"',"+
                   ((grossRentAnual)?"'"+grossRentAnual+"',":"null,")+
                   ((grossRent)?"'"+grossRent+"',":"null,")+
-                  ((monthlyCosts)?"'"+monthlyCosts+"',":"null,")+
-                  ((propertyManagement)?"'"+propertyManagement+"',":"null,")+
-                  ((platformCost)?"'"+platformCost+"',":"null,")+
-                  ((propertyMaintenance)?"'"+propertyMaintenance+"',":"null,")+
+                  ((lotClossingCost)?"'"+lotClossingCost+"',":"null,")+
+                  ((brokerComission)?"'"+brokerComission+"',":"null,")+
+                  ((clossingCost)?"'"+clossingCost+"',":"null,")+
+                  ((successFee)?"'"+successFee+"',":"null,")+
                   ((propertyTaxes)?"'"+propertyTaxes+"',":"null,")+
                   ((propertyInsurance)?"'"+propertyInsurance+"',":"null,")+
                   ((propertyUtilities)?"'"+propertyUtilities+"',":"null,")+
-                  ((netRentMonthly)?"'"+netRentMonthly+"',":"null,")+
-                  ((netRentAnnual)?"'"+netRentAnnual+"',":"null,")+
+                  ((salePrice)?"'"+salePrice+"',":"null,")+
+                  ((netProfit)?"'"+netProfit+"',":"null,")+
                   ((assetPrice)?"'"+assetPrice+"',":"null,")+
                   ((underlyingAssetPrice)?"'"+underlyingAssetPrice+"',":"null,")+
                   ((platformListingFee)?"'"+platformListingFee+"',":"null,")+
-                  ((initMaintenanceReserve)?"'"+initMaintenanceReserve+"',":"null,")+
-                  ((renovationReserve)?"'"+renovationReserve+"',":"null,")+
+                  ((accountantFees)?"'"+accountantFees+"',":"null,")+
+                  ((saleClossingCost)?"'"+saleClossingCost+"',":"null,")+
                   ((gpsLatitude)?"'"+gpsLatitude+"',":"null,")+
                   ((gpsLongitude)?"'"+gpsLongitude+"')":"null)");
     util.logConsole(2,strSQL);

@@ -44,14 +44,4 @@ module.exports = function(app) {
 
   app.route(config.app.base+'/v1/secured/auth/getSecurityOptions')
     .post(authController.getSecurityOptions);
-
-  //Two factors
-  app.route(config.app.base+'/v1/secured/auth/generateQRTwoFactor')
-    .post(authController.generateQRTwoFactor);
-
-  app.route(config.app.base+'/v1/secured/auth/verifyCodeTwoFactor')
-    .post(authController.verifyCodeTwoFactor);
-
-  app.route(config.app.base+'/v1/secured/auth/validateCodeTwoFactor')
-    .post(authController.validateCodeTwoFactor);
 };

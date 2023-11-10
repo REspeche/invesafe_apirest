@@ -1,7 +1,7 @@
 'use strict';
 var util = require('../utils/util');
 var formidable = require('formidable');
-var fs   = require('fs-extra');
+var fs   = require('fs');
 var randomstring = require("randomstring");
 const config = require('../config');
 const jimp = require('jimp');
@@ -22,7 +22,7 @@ var File = {
     form.on('error', function(err) {
         console.error(err);
     });
-    form.on('end', function() {
+    form.once('end', function() {
         console.error('call uploadImage <-- ('+vFiles.length+' files)');
         if (vFiles.length>0) {
           vFiles.forEach(function (itemFile) {
@@ -37,8 +37,8 @@ var File = {
     var nameFile = randomstring.generate({
       length: 41,
       capitalization: 'lowercase'
-    }) + '.' + pFile.type.split('/')[1];
-    console.log('--> Read file: '+pFile.path);
+    }) + '.' + pFile.mimetype.split('/')[1];
+    console.log('--> Read file: '+pFile.filepath);
     uploadFile(
       usrId,
       idRecord,
@@ -52,7 +52,7 @@ var File = {
             var filePathNew = process.cwd() + config.files[type].path;
             var filePathOld = filePathNew;
             //save large
-            jimp.read(pFile.path, (err, lenna) => {
+            jimp.read(pFile.filepath, (err, lenna) => {
               if (err) callback(newFile);
               lenna
                 .cover(config.files[type].size.large[0], config.files[type].size.large[1]) // resize
@@ -66,7 +66,7 @@ var File = {
                     });
                   };
                   // save small
-                  jimp.read(pFile.path, (err, lenna) => {
+                  jimp.read(pFile.filepath, (err, lenna) => {
                     if (err) callback(newFile);
                     lenna
                       .cover(config.files[type].size.small[0], config.files[type].size.small[1]) // resize

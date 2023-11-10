@@ -55,7 +55,7 @@ var insertUpdateProject = function(req, res, isNew) {
       .on('file', function(name, file) {
         vFiles.push(file);
       })
-      .on('end', function() {
+      .once('end', function() {
         util.logConsole(1,vFields);
         Project.insertUpdateProject(
           vFields.usrId,
@@ -165,7 +165,7 @@ exports.updateGallery = function(req, res) {
       .on('file', function(name, file) {
           vFiles.push(file);
       })
-      .on('end', function() {
+      .once('end', function() {
         Project.updateGallery(
           vFields.usrId,
           vFields.proId,
@@ -695,8 +695,8 @@ exports.saveMetaProperties = function(req, res) {
       objHighlights.assetAnnualReturn,
       objHighlights.assetRenovationTargetYield,
       objHighlights.assetRentStartDate,
-      objHighlights.assetRentPerToken,
-      objHighlights.assetTokenPrice,
+      objHighlights.setupFee,
+      objHighlights.assetTicketPrice,
       objHighlights.assetTotalTokens,
       objHighlights.assetPropertyType,
       objHighlights.assetConstructionYear,
@@ -712,20 +712,20 @@ exports.saveMetaProperties = function(req, res) {
       objFinancials.id,
       objFinancials.grossRentAnual,
       objFinancials.grossRent,
-      objFinancials.monthlyCosts,
-      objFinancials.propertyManagement,
-      objFinancials.platformCost,
-      objFinancials.propertyMaintenance,
+      objFinancials.lotClossingCost,
+      objFinancials.brokerComission,
+      objFinancials.clossingCost,
+      objFinancials.successFee,
       objFinancials.propertyTaxes,
       objFinancials.propertyInsurance,
       objFinancials.propertyUtilities,
-      objFinancials.netRentMonthly,
-      objFinancials.netRentAnnual,
+      objFinancials.salePrice,
+      objFinancials.netProfit,
       objFinancials.assetPrice,
       objFinancials.underlyingAssetPrice,
       objFinancials.platformListingFee,
-      objFinancials.initMaintenanceReserve,
-      objFinancials.renovationReserve,
+      objFinancials.accountantFees,
+      objFinancials.saleClossingCost,
       function(task) {
         util.logConsole(3,task);
         res.send(task);

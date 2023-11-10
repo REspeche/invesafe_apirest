@@ -9,9 +9,6 @@ var mail = require('../utils/mail');
 
 const speakeasy = require('speakeasy');
 const QRCode = require('qrcode');
-const JsonDB = require('node-json-db').JsonDB;
-const Config = require('node-json-db/dist/lib/JsonDBConfig').Config;
-const db = new JsonDB(new Config('twoFactorDatabase', true, false, '/'));
 var Profile = require('../models/profileModel');
 
 module.exports = {
@@ -461,101 +458,5 @@ module.exports = {
           };
           result(ret);
       });
-    },
-    generateQRTwoFactor: function(userId, email, result) {
-      var ret = new response;
-      let user = undefined;
-      const path = '/user/${userId}';
-      try {
-        user = db.getData(path);
-      }
-      catch (error) {
-        user = undefined;
-      }
-      try {
-        var url = undefined;
-        if (!user) {
-          const temp_secret = speakeasy.generateSecret();
-          url = speakeasy.otpauthURL({ secret: temp_secret.base32, label: 'inblock ('+email+')', algorithm: 'sha512' });
-          db.push(path, {userId, temp_secret});
-        }
-        else {
-          const { base32: secret } = user.temp_secret;
-          url = speakeasy.otpauthURL({ secret: secret, label: 'inblock ('+email+')', algorithm: 'sha512' });
-        }
-        // Get the data URL of the authenticator URL
-        QRCode.toDataURL(url, function(err, base64) {
-          console.log(base64);
-
-          // Display this data URL to the user in an <img> tag
-          ret.data = { userId, image: base64};
-          result(ret);
-        });
-      }
-      catch (error) {
-        console.log("error: ", error);
-        ret.code = 300;
-        ret.message = error.message;
-        result(ret);
-      };
-    },
-    verifyCodeTwoFactor: function(userId, token, result) {
-      var ret = new response;
-      try {
-          const path = '/user/${userId}';
-          const user = db.getData(path);
-
-          const { base32: secret } = user.temp_secret;
-
-          const verified = speakeasy.totp.verify({
-            secret,
-            encoding: 'base32',
-            token
-          });
-          if (verified) {
-            // Update user data
-            db.push(path, { userId, secret: user.temp_secret });
-            ret.data = { verified: true };
-            Profile.updateTwoFactor(userId,1);
-          } else {
-            ret.data = { verified: false };
-            Profile.updateTwoFactor(userId,0);
-          }
-          result(ret);
-      }
-      catch (error) {
-        console.log("error: ", error);
-        ret.code = 300;
-        ret.message = error.message;
-        result(ret);
-      }
-    },
-    validateCodeTwoFactor: function(userId, token, result) {
-      var ret = new response;
-      try {
-          const path = '/user/${userId}';
-          const user = db.getData(path);
-
-          const { base32: secret } = user.secret;
-
-          const tokenValidates = speakeasy.totp.verify({
-            secret,
-            encoding: 'base32',
-            token,
-            window: 1
-          });
-          if (tokenValidates) {
-            ret.data = { verified: true };
-          } else {
-            ret.data = { verified: false};
-          }
-          result(ret);
-      }
-      catch (error) {
-        console.log("error: ", error);
-        ret.code = 300;
-        ret.message = error.message;
-        result(ret);
-      }
     }
 };
